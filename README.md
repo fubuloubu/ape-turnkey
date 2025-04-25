@@ -56,10 +56,14 @@ You will then be able to use this wallet for signing messages and transactions w
 ```py
 $ ape console
 
- In[0]: acct = accounts.load("turnkey-wallet")
+ In[0]: acct = accounts.load("turnkey-wallet/0")
 
  In[1]: acct.sign_message("Signing using the turnkey API!")
 Out[1]: <MessageSignature v=0 r=... s=...>
+```
+
+```{notice}
+Turnkey account aliases follow the convention of `<wallet name>/<account index>` since a wallet can have more than one associated account
 ```
 
 ## Development
