@@ -41,6 +41,7 @@ class User(BaseModel):
     updated: datetime = Field(alias="updatedAt")
 
     @field_validator("created", "updated", mode="before")
+    @classmethod
     def convert_to_datetime(cls, data: dict) -> datetime:
         return datetime.fromtimestamp(float(f"{data['seconds']}.{data['nanos']}"), tz=timezone.utc)
 
@@ -83,6 +84,7 @@ class Wallet(BaseModel):
     updated: datetime = Field(alias="updatedAt")
 
     @field_validator("created", "updated", mode="before")
+    @classmethod
     def convert_to_datetime(cls, data: dict) -> datetime:
         return datetime.fromtimestamp(float(f"{data['seconds']}.{data['nanos']}"), tz=timezone.utc)
 
@@ -107,6 +109,7 @@ class WalletAccount(BaseModel):
     updated: datetime = Field(alias="updatedAt")
 
     @field_validator("created", "updated", mode="before")
+    @classmethod
     def convert_to_datetime(cls, data: dict) -> datetime:
         return datetime.fromtimestamp(float(f"{data['seconds']}.{data['nanos']}"), tz=timezone.utc)
 
@@ -202,11 +205,13 @@ class TurnkeyClient:
             "/public/v1/submit/create_wallet",
             type=str(ActivityType.CREATE_WALLET),
             timestampMs=str(timestamp_ms),
-            parameters=dict(
-                walletName=name,
-                accounts=[account.model_dump(mode="json", by_alias=True) for account in accounts],
-                mnemonicLength=mnemonic_length,
-            ),
+            parameters={
+                "walletName": name,
+                "accounts": [
+                    account.model_dump(mode="json", by_alias=True) for account in accounts
+                ],
+                "mnemonicLength": mnemonic_length,
+            },
         )
 
         return uuid.UUID(result["activity"]["result"]["createWalletResult"]["walletId"])
