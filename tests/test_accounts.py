@@ -22,7 +22,7 @@ def test_transaction_signing(accounts, turnkey_container, use_legacy):
     # NOTE: Need this so account has some gas for testing
     accounts[0].transfer(account, "1 ether")
 
-    txn_kwargs = dict()
+    txn_kwargs = {}
     if use_legacy:
         txn_kwargs["gas_price"] = "1 gwei"
 

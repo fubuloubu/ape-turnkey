@@ -1,11 +1,11 @@
 # Overview
 
-Ape account plugin and CLI for [Turnkey](https://turnkey.com).
-Recommended plugin for automation and use with the [Silverback Platform](https://silverback.apeworx.io).
+Ape account plugin and CLI for [Turnkey](https://turnkey.com). Recommended plugin for automation and
+use with the [Silverback Platform](https://silverback.apeworx.io).
 
 ## Dependencies
 
-- [python3](https://www.python.org/downloads) version 3.9 up to 3.13.
+- [Python 3](https://www.python.org/downloads) version 3.10 or greater.
 
 ## Installation
 
@@ -17,20 +17,22 @@ You can install the latest release via [`pip`](https://pypi.org/project/pip/):
 pip install ape-turnkey
 ```
 
-### via `setuptools`
+### via source
 
-You can clone the repository and use [`setuptools`](https://github.com/pypa/setuptools) for the most up-to-date version:
+You can clone the repository and install for development:
 
 ```bash
 git clone https://github.com/ApeWorX/ape-turnkey.git
 cd ape-turnkey
-python3 setup.py install
+uv sync --group dev
+uv run prek install
 ```
 
 ## Usage
 
-In order to use this plugin, you will need the `TURNKEY_ORGANIZATION_ID`, `TURNKEY_API_PUBLIC_KEY`, and `TURNKEY_API_PRIVATE_KEY` variables.
-You can see which account you are signed in with using the following command:
+In order to use this plugin, you will need the `TURNKEY_ORGANIZATION_ID`, `TURNKEY_API_PUBLIC_KEY`,
+and `TURNKEY_API_PRIVATE_KEY` variables. You can see which account you are signed in with using the
+following command:
 
 ```sh
 $ ape turnkey whoami
@@ -51,7 +53,8 @@ $ ape turnkey wallets new turnkey-wallet ...
 SUCCESS: Wallet ID '1234....beef' created!
 ```
 
-You will then be able to use this wallet for signing messages and transactions with Ape now, for example:
+You will then be able to use this wallet for signing messages and transactions with Ape now, for
+example:
 
 ```py
 $ ape console
@@ -68,5 +71,5 @@ Turnkey account aliases follow the convention of `<wallet name>/<account index>`
 
 ## Development
 
-Please see the [contributing guide](CONTRIBUTING.md) to learn more how to contribute to this project.
-Comments, questions, criticisms and pull requests are welcomed.
+Please see the [contributing guide](CONTRIBUTING.md) to learn more how to contribute to this
+project. Comments, questions, criticisms and pull requests are welcomed.

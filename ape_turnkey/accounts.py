@@ -1,5 +1,6 @@
+from collections.abc import Iterator
 from functools import cached_property
-from typing import TYPE_CHECKING, Any, Iterator
+from typing import TYPE_CHECKING, Any
 
 import rlp  # type: ignore[import-untyped]
 from ape.api import AccountAPI, AccountContainerAPI, TransactionAPI
@@ -26,7 +27,7 @@ class AccountContainer(AccountContainerAPI):
 
     @property
     def aliases(self) -> Iterator[str]:
-        yield from map(lambda a: a.alias, self.accounts)
+        yield from (a.alias for a in self.accounts)
 
     @property
     def accounts(self) -> Iterator["Account"]:
@@ -104,8 +105,14 @@ class Account(AccountAPI):
             encoded_unsigned_txn = bytes([txn.type]) + encoded_unsigned_txn
 
         sig = self.wallet_account.sign_raw_payload(encoded_unsigned_txn.hex())
+        v = int(sig["v"])
+        if not txn.type and v in (0, 1):
+            chain_id = txn_dict.get("chainId") or txn.model_dump(by_alias=True).get("chainId")
+            if chain_id:
+                v += 35 + (2 * int(chain_id))
+
         txn.signature = TransactionSignature(
-            v=int(sig["v"]),
+            v=v,
             r=bytes.fromhex(sig["r"]),
             s=bytes.fromhex(sig["s"]),
         )
